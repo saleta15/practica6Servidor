@@ -52,6 +52,25 @@ public class HelloWorld {
         return "ok";
     }
 
+    @WebMethod
+    public String borrarEstudiante(int matricula) {
+
+        if(!estudianteExiste(matricula) )
+            return "error";
+
+        Iterator<Estudiante> it = estudiantes.iterator();
+        while (it.hasNext()) {
+            if (it.next().getMatricula() == matricula){
+                it.remove();
+
+                break;
+            }
+        }
+
+        printEstudiantes();
+        return "ok";
+    }
+
   @WebMethod
   public String crearAsignatura(String codigo,  String nombre) {
 
@@ -115,7 +134,7 @@ public class HelloWorld {
     }
   public static void main(String[] argv) {
 	Object implementor = new HelloWorld ();
-	String address = "http://localhost:9011/HelloWorld";
+	String address = "http://localhost:9012/HelloWorld";
 	Endpoint.publish(address, implementor);
   }
 
