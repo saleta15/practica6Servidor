@@ -87,7 +87,7 @@ public class HelloWorld {
 
 	Asignatura a = new Asignatura(codigo, nombre);
 	if(asignaturaExiste(codigo))
-	  return "Error";
+	  return "error";
 	asignaturas.add(a);
 	printEstudiantes();
 	printAsignaturas();
