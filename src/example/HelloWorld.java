@@ -71,6 +71,17 @@ public class HelloWorld {
         return "ok";
     }
 
+    @WebMethod
+    public ArrayList<Estudiante> verEstudiantes() {
+
+
+        printEstudiantes();
+        return estudiantes;
+
+
+
+    }
+
   @WebMethod
   public String crearAsignatura(String codigo,  String nombre) {
 
@@ -136,7 +147,7 @@ public class HelloWorld {
     }
   public static void main(String[] argv) {
 	Object implementor = new HelloWorld ();
-	String address = "http://localhost:9013/HelloWorld";
+	String address = "http://localhost:9014/HelloWorld";
 	Endpoint.publish(address, implementor);
   }
 
