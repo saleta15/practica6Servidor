@@ -4,6 +4,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static example.Utilidades.*;
 
@@ -35,6 +36,22 @@ public class HelloWorld {
 	return e.getMatricula();
   }
 
+    @WebMethod
+    public String editarEstudiante(String nombre, int matricula, String carrera) {
+
+        Estudiante e = buscarEstudiante(matricula);
+
+        if(!estudianteExiste(matricula) )
+            return "error";
+
+        e.setNombre(nombre);
+        e.setCarrera(carrera);
+
+
+        printEstudiantes();
+        return "ok";
+    }
+
   @WebMethod
   public String crearAsignatura(String codigo,  String nombre) {
 
@@ -54,9 +71,51 @@ public class HelloWorld {
 
 	return e;
   }
+
+    @WebMethod
+    public String borrarAsignaturaEstudiante(int matricula, String codigoAsignatura) {
+
+        if(!estudianteExiste(matricula))
+            return "error_matricula";
+        if(!asignaturaExiste(codigoAsignatura))
+            return "error_asignatura";
+        Estudiante e = buscarEstudiante(matricula);
+        Iterator<Asignatura> it = e.getAsignaturas().iterator();
+        boolean borradoExitoso = false;
+        while (it.hasNext()) {
+            if (it.next().getCodigo().equals(codigoAsignatura)){
+                it.remove();
+                borradoExitoso = true;
+                break;
+            }
+        }
+        printEstudiantes();
+        if(borradoExitoso)
+            return "ok";
+        else
+            return "error_mas";
+
+
+    }
+
+    @WebMethod
+    public String agregarAsignaturaEstudiante(int matricula, String codigoAsignatura) {
+
+        if(!estudianteExiste(matricula))
+            return "error_matricula";
+        if(!asignaturaExiste(codigoAsignatura))
+            return "error_asignatura";
+        Estudiante e = buscarEstudiante(matricula);
+        if(asignaturaExisteEstudiante(codigoAsignatura,e))
+            return "error_asignatura_repetida";
+        e.getAsignaturas().add(buscarAsignatura(codigoAsignatura));
+        printEstudiantes();
+        return "ok";
+
+    }
   public static void main(String[] argv) {
 	Object implementor = new HelloWorld ();
-	String address = "http://localhost:9008/HelloWorld";
+	String address = "http://localhost:9011/HelloWorld";
 	Endpoint.publish(address, implementor);
   }
 
