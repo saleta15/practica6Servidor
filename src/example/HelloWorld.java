@@ -83,10 +83,12 @@ public class HelloWorld {
 	return a.getCodigo();
   }
   @WebMethod
-  public Estudiante getEstudiante(String nombre, int matricula, String carrera) {
+  public Estudiante getEstudiante( int matricula) {
 
-	Estudiante e = new Estudiante(nombre, matricula,carrera);
+	if(!estudianteExiste(matricula))
+        return null;
 
+    Estudiante e = buscarEstudiante(matricula);
 
 	return e;
   }
@@ -134,7 +136,7 @@ public class HelloWorld {
     }
   public static void main(String[] argv) {
 	Object implementor = new HelloWorld ();
-	String address = "http://localhost:9012/HelloWorld";
+	String address = "http://localhost:9013/HelloWorld";
 	Endpoint.publish(address, implementor);
   }
 
